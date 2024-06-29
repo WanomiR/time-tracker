@@ -9,6 +9,8 @@ import (
 func (app *TrackerApp) Routes() http.Handler {
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
+	mux.Use(zapLogger)
+	mux.Use(enableCors)
 
 	mux.Route("/api", func(mux chi.Router) {
 		mux.Get("/users", app.AllUsers)

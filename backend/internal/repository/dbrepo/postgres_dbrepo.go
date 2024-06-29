@@ -4,7 +4,8 @@ import (
 	"backend/internal/models"
 	"context"
 	"database/sql"
-	"log"
+	"fmt"
+	"os"
 	"time"
 )
 
@@ -41,7 +42,7 @@ func (db *PostgresDBRepo) AllUsers() ([]*models.User, error) {
 			&user.Address,
 		)
 		if err != nil {
-			log.Println(err)
+			fmt.Fprintln(os.Stderr, err.Error())
 			continue
 		}
 
