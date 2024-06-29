@@ -15,6 +15,12 @@ type TrackerApp struct {
 	DB   repository.DatabaseRepo
 }
 
+// @title TimeTracker API
+// @version 1.0.0
+// @description Time tracking service.
+
+// @host localhost:8888
+// @BasePath /api
 func main() {
 	var app TrackerApp
 

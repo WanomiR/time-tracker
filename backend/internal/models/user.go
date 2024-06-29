@@ -1,5 +1,9 @@
 package models
 
+type ResponseUsers struct {
+	Users []*User `json:"users"`
+}
+
 type User struct {
 	Id             int    `json:"id,int"`
 	PassportSeries int    `json:"passport_series,int"`

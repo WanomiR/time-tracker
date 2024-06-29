@@ -1,0 +1,60 @@
+basePath: /api
+definitions:
+  main.JSONResponse:
+    properties:
+      data:
+        description: any is an alias for interface{}
+      error:
+        type: boolean
+      message:
+        type: string
+    type: object
+  models.ResponseUsers:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/models.User'
+        type: array
+    type: object
+  models.User:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      passport_number:
+        type: integer
+      passport_series:
+        type: integer
+      patronymic:
+        type: string
+      surname:
+        type: string
+    type: object
+host: localhost:8888
+info:
+  contact: {}
+  description: Measure how much time it takes to complete a task.
+  title: TimeTracker API
+  version: 1.0.0
+paths:
+  /api/users:
+    get:
+      description: Return a list of all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseUsers'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.JSONResponse'
+      summary: All users
+      tags:
+      - users
+swagger: "2.0"

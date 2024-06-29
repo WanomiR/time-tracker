@@ -1,8 +1,10 @@
 package main
 
 import (
+	_ "backend/docs"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 )
 
@@ -20,6 +22,10 @@ func (app *TrackerApp) Routes() http.Handler {
 		w.WriteHeader(200)
 		w.Write([]byte("Hello World"))
 	})
+
+	mux.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:"+app.Port+"/swagger/doc.json"),
+	))
 
 	return mux
 }
