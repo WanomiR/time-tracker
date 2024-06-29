@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"backend/internal/repository"
+	"backend/internal/repository/dbrepo"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 type TrackerApp struct {
 	Port string
 	DSN  string // Data Source Name
+	DB   repository.DatabaseRepo
 }
 
 func main() {
@@ -24,11 +26,14 @@ func main() {
 	app.Port = os.Getenv("PORT")
 	app.DSN = os.Getenv("DSN")
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprint(w, "Hello, World!")
-	})
+	conn, err := app.connectToDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	app.DB = &dbrepo.PostgresDBRepo{DB: conn}
+	defer app.DB.Connection().Close()
 
 	log.Printf("Listening on port %s", app.Port)
-	log.Fatal(http.ListenAndServe(":"+app.Port, nil))
+	log.Fatal(http.ListenAndServe(":"+app.Port, app.Routes()))
 }

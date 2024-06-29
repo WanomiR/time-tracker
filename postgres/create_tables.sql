@@ -11,10 +11,10 @@ CREATE TABLE public.users
 
 INSERT INTO public.users (passport_series, passport_number, surname, name, patronymic, address)
 VALUES (1234, 567890, 'Ivanov', 'Ivan', 'Ivanovich', 'Moscow, Lenina 5 apt. 1'),
-       (1534, 157798, 'Sherlock', 'Holmes', NULL, 'London, 221B Backer Street'),
-       (2626, 125616, 'Jack', 'Reacher', NULL, 'Undefined'),
+       (1534, 157798, 'Sherlock', 'Holmes', '', 'London, 221B Backer Street'),
+       (2626, 125616, 'Jack', 'Reacher', '', 'Undefined'),
        (9876, 829769, 'Pavlov', 'Konstantin', 'Andreevich', 'Nizhniy Novgorod, Stroiteley 12'),
-       (3265, 290523, 'Verstappen', 'Max', NULL, 'Monaco, 76 Crosby street')
+       (3265, 290523, 'Verstappen', 'Max', '', 'Monaco, 76 Crosby street')
 ;
 
 CREATE TABLE public.tasks
