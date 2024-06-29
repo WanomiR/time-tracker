@@ -15,7 +15,14 @@ func (app *TrackerApp) Routes() http.Handler {
 	mux.Use(enableCors)
 
 	mux.Route("/api", func(mux chi.Router) {
-		mux.Get("/users", app.AllUsers)
+		mux.Route("/users", func(mux chi.Router) {
+			mux.Get("/", app.GetAllUsers)
+			mux.Put("/", app.AddUser)
+			mux.Post("/", app.GetUserByPassport)
+			mux.Post("/{id}", nil)
+			mux.Patch("/{id}", nil)
+			mux.Delete("/{id}", nil)
+		})
 	})
 
 	mux.Get("/", func(w http.ResponseWriter, r *http.Request) {

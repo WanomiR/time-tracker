@@ -7,5 +7,7 @@ import (
 
 type DatabaseRepo interface {
 	Connection() *sql.DB
-	AllUsers() ([]*models.User, error)
+	SelectAllUsers() ([]*models.User, error)
+	SelectUserByPassport(series, number int) (*models.User, error)
+	InsertUser(user models.User) error
 }
