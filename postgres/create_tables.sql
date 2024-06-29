@@ -22,24 +22,23 @@ CREATE TABLE public.tasks
     id          SERIAL PRIMARY KEY,
     user_id     INTEGER      NOT NULL,
     task        VARCHAR(100) NOT NULL,
-    started_at  timestamp    NOT NULL,
-    finished_at timestamp,
-    duration    INTEGER
+    started_at  TIMESTAMP    NOT NULL,
+    finished_at TIMESTAMP
 );
 
-INSERT INTO public.tasks (user_id, task, started_at, finished_at, duration)
-VALUES (1, 'дойка коровы', (now() - INTERVAL '1155 seconds'), now(), 1155),
-       (1, 'прополка грядкок', (now() - INTERVAL '10532 seconds'), now(), 10523),
-       (1, 'чистка амбара', (now() - INTERVAL '5116 seconds'), now(), 5116),
-       (5, 'RB20 tests', (now() - INTERVAL '7626 seconds'), now(), 7626),
-       (5, 'sprint qualifying', (now() - INTERVAL '3161 seconds'), now(), 3161),
-       (5, 'qualifying', (now() - INTERVAL '4915 seconds'), now(), 4915),
-       (5, 'Austrian Grand Prix', (now() - INTERVAL '5166 seconds'), now(), 5166),
-       (3, 'murder investigation', (now() - INTERVAL '7235 seconds'), now(), 7235),
-       (3, 'fighting in the bar', (now() - INTERVAL '1800 seconds'), now(), 1800),
-       (2, 'arguing with Watson', (now() - INTERVAL '4531 seconds'), now(), 4531),
-       (2, 'investigating', (now() - INTERVAL '5634 seconds'), now(), 5634),
-       (4, 'groceries', (now() - INTERVAL '3235 seconds'), now(), 3235),
-       (4, 'plumbing', (now() - INTERVAL '2662 seconds'), now(), 2662),
-       (4, 'fixing the porch', (now() - INTERVAL '5432 seconds'), now(), 5432)
+INSERT INTO public.tasks (user_id, task, started_at, finished_at)
+VALUES (1, 'дойка коровы', (now() - INTERVAL '1155 seconds'), now()),
+       (1, 'прополка грядкок', (now() - INTERVAL '10532 seconds'), now()),
+       (1, 'чистка амбара', (now() - INTERVAL '5116 seconds'), now()),
+       (5, 'RB20 tests', (now() - INTERVAL '7626 seconds'), now()),
+       (5, 'sprint qualifying', (now() - INTERVAL '3161 seconds'), now()),
+       (5, 'qualifying', (now() - INTERVAL '4915 seconds'), now()),
+       (5, 'Austrian Grand Prix', (now() - INTERVAL '5166 seconds'), now()),
+       (3, 'murder investigation', (now() - INTERVAL '7235 seconds'), now()),
+       (3, 'fighting in the bar', (now() - INTERVAL '1800 seconds'), now()),
+       (2, 'arguing with Watson', (now() - INTERVAL '4531 seconds'), now()),
+       (2, 'investigating', (now() - INTERVAL '5634 seconds'), now()),
+       (4, 'groceries', (now() - INTERVAL '3235 seconds'), now()),
+       (4, 'plumbing', (now() - INTERVAL '2662 seconds'), now()),
+       (4, 'fixing the porch', (now() - INTERVAL '5432 seconds'), now())
 ;

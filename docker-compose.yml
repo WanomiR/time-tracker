@@ -1,4 +1,13 @@
 services:
+  backend:
+    build:
+      ./backend
+    ports:
+      - '8888:8888'
+    restart: always
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:alpine
     environment:
