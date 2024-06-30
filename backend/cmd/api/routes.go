@@ -23,6 +23,9 @@ func (app *TrackerApp) Routes() http.Handler {
 			mux.Patch("/", app.UpdateUser)
 			mux.Delete("/", app.DeleteUser)
 		})
+		mux.Route("/tasks", func(mux chi.Router) {
+			mux.Get("/", app.GetAllTasks)
+		})
 	})
 
 	mux.Get("/", func(w http.ResponseWriter, r *http.Request) {

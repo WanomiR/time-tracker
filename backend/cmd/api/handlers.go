@@ -208,3 +208,22 @@ func (app *TrackerApp) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJSONResponse(w, http.StatusOK, resp)
 }
+
+// GetAllTasks
+// @Summary get all tasks
+// @Description Return a list of all tasks
+// @Tags tasks
+// @Produce json
+// @Success 200 {object} models.ResponseTasks
+// @Failure 500 {object} JSONResponse
+// @Router /tasks [get]
+func (app *TrackerApp) GetAllTasks(w http.ResponseWriter, r *http.Request) {
+	tasks, err := app.DB.SelectAllTasks()
+	if err != nil {
+		writeJSONError(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	tasksResponse := models.ResponseTasks{Tasks: tasks}
+	writeJSONResponse(w, http.StatusOK, tasksResponse)
+}

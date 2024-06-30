@@ -13,4 +13,5 @@ type DatabaseRepo interface {
 	InsertUser(models.User) error
 	UpdateUser(models.User) error
 	DeleteUserByPassport(string) error
+	SelectAllTasks() ([]*models.Task, error)
 }

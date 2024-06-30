@@ -5,8 +5,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"fmt"
-	"os"
+	"log"
 	"strconv"
 )
 
@@ -34,7 +33,7 @@ func (db *PostgresDBRepo) SelectAllUsers() ([]*models.User, error) {
 			&user.Address,
 		)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, err.Error())
+			log.Println(err)
 			continue
 		}
 
