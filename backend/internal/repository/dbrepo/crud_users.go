@@ -3,16 +3,18 @@ package dbrepo
 import (
 	"backend/internal/models"
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 func (db *PostgresDBRepo) SelectAllUsers() ([]*models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT passport, surname, name, patronymic, address FROM public.users`
+	query := `SELECT * FROM public.users`
 	rows, err := db.DB.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
@@ -24,6 +26,7 @@ func (db *PostgresDBRepo) SelectAllUsers() ([]*models.User, error) {
 	for rows.Next() {
 		var user models.User
 		err = rows.Scan(
+			&user.Id,
 			&user.Passport,
 			&user.Surname,
 			&user.Name,
@@ -45,17 +48,20 @@ func (db *PostgresDBRepo) SelectUserByPassport(passport string) (*models.User, e
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT passport, surname, name, patronymic, address FROM public.users WHERE passport = $1`
+	query := `SELECT * FROM public.users WHERE passport = $1`
 
 	var user models.User
 	err := db.DB.QueryRowContext(ctx, query, passport).Scan(
+		&user.Id,
 		&user.Passport,
 		&user.Surname,
 		&user.Name,
 		&user.Patronymic,
 		&user.Address,
 	)
-	if err != nil {
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, errors.New("user with passport " + passport + " not found")
+	} else if err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -65,17 +71,20 @@ func (db *PostgresDBRepo) SelectUserById(id int) (*models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT passport, surname, name, patronymic, address FROM public.users WHERE id = $1`
+	query := `SELECT * FROM public.users WHERE id = $1`
 
 	var user models.User
 	err := db.DB.QueryRowContext(ctx, query, id).Scan(
+		&user.Id,
 		&user.Passport,
 		&user.Surname,
 		&user.Name,
 		&user.Patronymic,
 		&user.Address,
 	)
-	if err != nil {
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, errors.New("user with id " + strconv.Itoa(id) + " not found")
+	} else if err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -122,7 +131,7 @@ func (db *PostgresDBRepo) UpdateUser(user models.User) error {
 	}
 
 	if n, _ := result.RowsAffected(); n == 0 {
-		return errors.New("user with this passport has not been found")
+		return errors.New("user with passport " + user.Passport + " not found")
 	}
 
 	return nil
@@ -141,7 +150,7 @@ func (db *PostgresDBRepo) DeleteUserByPassport(passport string) error {
 	}
 
 	if n, _ := result.RowsAffected(); n == 0 {
-		return errors.New("user with this passport has not been found")
+		return errors.New("user with passport " + passport + " not found")
 	}
 
 	return nil

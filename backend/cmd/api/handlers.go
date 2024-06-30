@@ -167,7 +167,6 @@ func (app *TrackerApp) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	resp := JSONResponse{
 		Error:   false,
 		Message: "user " + user.Passport + " has been updated",
-		Data:    user,
 	}
 	writeJSONResponse(w, http.StatusOK, resp)
 
