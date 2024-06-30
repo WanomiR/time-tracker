@@ -8,6 +8,9 @@ import (
 type DatabaseRepo interface {
 	Connection() *sql.DB
 	SelectAllUsers() ([]*models.User, error)
-	SelectUserByPassport(series, number int) (*models.User, error)
-	InsertUser(user models.User) error
+	SelectUserByPassport(string) (*models.User, error)
+	SelectUserById(int) (*models.User, error)
+	InsertUser(models.User) error
+	UpdateUser(models.User) error
+	DeleteUserByPassport(string) error
 }

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"regexp"
 )
 
 type JSONResponse struct {
@@ -56,4 +57,13 @@ func writeJSONError(w http.ResponseWriter, err error, status ...int) {
 	payload.Message = err.Error()
 
 	writeJSONResponse(w, statusCode, payload)
+}
+
+func validatePassport(passport string) error {
+	match, _ := regexp.MatchString("\\d{4} \\d{6}", passport)
+	if !match {
+		return errors.New("invalid passport format")
+	}
+
+	return nil
 }
