@@ -17,11 +17,10 @@ func (app *TrackerApp) Routes() http.Handler {
 	mux.Route("/api", func(mux chi.Router) {
 		mux.Route("/users", func(mux chi.Router) {
 			mux.Get("/", app.GetAllUsers)
+			mux.Post("/", app.GetUser)
 			mux.Put("/", app.AddUser)
-			mux.Post("/", app.GetUserByPassport)
-			mux.Post("/{id}", nil)
-			mux.Patch("/{id}", nil)
-			mux.Delete("/{id}", nil)
+			mux.Patch("/", app.UpdateUser)
+			mux.Delete("/", app.DeleteUser)
 		})
 	})
 
