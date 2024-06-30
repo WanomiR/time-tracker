@@ -8,6 +8,16 @@ services:
     depends_on:
       - postgres
 
+  frontend:
+    build:
+      ./frontend
+    ports:
+      - '3333:3333'
+    restart: always
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+
   postgres:
     image: postgres:alpine
     environment:
