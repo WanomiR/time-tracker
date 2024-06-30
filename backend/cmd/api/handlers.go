@@ -227,3 +227,96 @@ func (app *TrackerApp) GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	tasksResponse := models.ResponseTasks{Tasks: tasks}
 	writeJSONResponse(w, http.StatusOK, tasksResponse)
 }
+
+// StartTask
+// @Summary start task
+// @Description Start a new task
+// @Tags tasks
+// @Accept json
+// @Produce json
+// @Param query body models.RequestNewTask true "task data"
+// @Success 201 {object} JSONResponse
+// @Failure 400 {object} JSONResponse
+// @Failure 500 {object} JSONResponse
+// @Router /tasks [post]
+func (app *TrackerApp) StartTask(w http.ResponseWriter, r *http.Request) {
+	var task models.RequestNewTask
+
+	err := readJSONPayload(w, r, &task)
+	if err != nil {
+		writeJSONError(w, err, http.StatusBadRequest)
+		return
+	}
+
+	taskId, err := app.DB.StartTask(task)
+	if err != nil {
+		writeJSONError(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	resp := JSONResponse{
+		Error:   false,
+		Message: "new task with id " + strconv.Itoa(taskId) + " has been started",
+	}
+	writeJSONResponse(w, http.StatusCreated, resp)
+}
+
+// FinishTask
+// @Summary finish task
+// @Description Finish the task
+// @Tags tasks
+// @Produce json
+// @Param id path int true "task id"
+// @Success 200 {object} JSONResponse
+// @Failure 400 {object} JSONResponse
+// @Router /tasks/{id} [post]
+func (app *TrackerApp) FinishTask(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	taskId, err := strconv.Atoi(id)
+	if err != nil {
+		writeJSONError(w, errors.New("bad task id"), http.StatusBadRequest)
+		return
+	}
+
+	err = app.DB.FinishTask(taskId)
+	if err != nil {
+		writeJSONError(w, err)
+		return
+	}
+
+	resp := JSONResponse{
+		Error:   false,
+		Message: "task " + strconv.Itoa(taskId) + " has been finished",
+	}
+	writeJSONResponse(w, http.StatusOK, resp)
+}
+
+// DeleteTask
+// @Summary delete task
+// @Description Delete the task
+// @Tags tasks
+// @Produce json
+// @Param id path int true "task id"
+// @Success 200 {object} JSONResponse
+// @Failure 400 {object} JSONResponse
+// @Router /tasks/{id} [delete]
+func (app *TrackerApp) DeleteTask(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	taskId, err := strconv.Atoi(id)
+	if err != nil {
+		writeJSONError(w, errors.New("bad task id"), http.StatusBadRequest)
+		return
+	}
+
+	err = app.DB.DeleteTask(taskId)
+	if err != nil {
+		writeJSONError(w, err)
+		return
+	}
+
+	resp := JSONResponse{
+		Error:   false,
+		Message: "task " + strconv.Itoa(taskId) + " has been deleted",
+	}
+	writeJSONResponse(w, http.StatusOK, resp)
+}

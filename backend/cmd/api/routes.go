@@ -25,6 +25,9 @@ func (app *TrackerApp) Routes() http.Handler {
 		})
 		mux.Route("/tasks", func(mux chi.Router) {
 			mux.Get("/", app.GetAllTasks)
+			mux.Post("/", app.StartTask)
+			mux.Post("/{id}", app.FinishTask)
+			mux.Delete("/{id}", app.DeleteTask)
 		})
 	})
 
